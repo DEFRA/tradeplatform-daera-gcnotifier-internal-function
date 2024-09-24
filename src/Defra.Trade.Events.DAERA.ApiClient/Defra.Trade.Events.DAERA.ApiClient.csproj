@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Defra.Trade.Common.Functions" Version="4.0.0" />
+    <PackageReference Include="Defra.Trade.Common" Version="4.0.2" />
+  </ItemGroup>
+</Project>
