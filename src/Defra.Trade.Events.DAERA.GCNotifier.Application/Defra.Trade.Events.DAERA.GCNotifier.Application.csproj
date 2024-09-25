@@ -4,17 +4,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
   <ItemGroup>
-    <Compile Remove="Infrastructure\**" />
-    <EmbeddedResource Remove="Infrastructure\**" />
-    <None Remove="Infrastructure\**" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Defra.Trade.Common.Function.Health" Version="4.0.3-pre" />
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="Defra.Trade.Common.Functions" Version="4.0.0" />
-    <PackageReference Include="Defra.Trade.Common" Version="4.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Defra.Trade.Common.Function.Health\Defra.Trade.Common.Function.Health.csproj" />
     <ProjectReference Include="..\Defra.Trade.Events.DAERA.ApiClient\Defra.Trade.Events.DAERA.ApiClient.csproj" />
   </ItemGroup>
 </Project>
