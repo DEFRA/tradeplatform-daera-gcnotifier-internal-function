@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="Defra.Trade.Common.Function.Health" Version="4.0.3-pre" />
+    <PackageReference Include="Defra.Trade.Common.Function.Health" Version="4.0.4" />
   </ItemGroup>
 
   <ItemGroup>
