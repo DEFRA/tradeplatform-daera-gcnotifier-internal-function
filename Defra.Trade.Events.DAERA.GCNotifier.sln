@@ -33,8 +33,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.Events.DAERA.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.Events.DAERA.GCNotifier.Tests.Common", "test\Defra.Trade.Events.DAERA.GCNotifier.Tests.Common\Defra.Trade.Events.DAERA.GCNotifier.Tests.Common.csproj", "{7DA1F019-0C90-4A86-B09C-8E537A1EFC7C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Defra.Trade.Common.Function.Health", "src\Defra.Trade.Common.Function.Health\Defra.Trade.Common.Function.Health.csproj", "{89B37B0C-71BD-493E-981B-892CDF0AFB14}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,10 +67,6 @@ Global
 		{7DA1F019-0C90-4A86-B09C-8E537A1EFC7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DA1F019-0C90-4A86-B09C-8E537A1EFC7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DA1F019-0C90-4A86-B09C-8E537A1EFC7C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{89B37B0C-71BD-493E-981B-892CDF0AFB14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{89B37B0C-71BD-493E-981B-892CDF0AFB14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{89B37B0C-71BD-493E-981B-892CDF0AFB14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{89B37B0C-71BD-493E-981B-892CDF0AFB14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,7 +80,6 @@ Global
 		{6D08ACB4-030C-48EA-B686-90912B89F9C3} = {D54CD5E5-EEFB-4BC9-AF53-76CDD39B0294}
 		{7E3E0907-0947-4E4C-9373-389BC8CD5B1B} = {8807022E-FB51-43E5-B733-839F2D90BE75}
 		{7DA1F019-0C90-4A86-B09C-8E537A1EFC7C} = {8807022E-FB51-43E5-B733-839F2D90BE75}
-		{89B37B0C-71BD-493E-981B-892CDF0AFB14} = {547C15FF-17BE-408A-98F1-DF05E3332617}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49B08D9C-EA54-404F-A883-25F399295995}
