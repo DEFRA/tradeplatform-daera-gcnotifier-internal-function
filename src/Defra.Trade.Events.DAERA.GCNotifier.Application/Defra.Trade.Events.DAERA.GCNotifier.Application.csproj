@@ -12,7 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Defra.Trade.Common.Functions" Version="4.0.0" />
     <PackageReference Include="Defra.Trade.Common" Version="4.0.2" />
-    <PackageReference Include="Defra.Trade.Common.Function.Health" Version="4.0.4" />
+ 
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Defra.Trade.Common.Function.Health\Defra.Trade.Common.Function.Health.csproj" />
