@@ -10,7 +10,7 @@
     <None Remove="Infrastructure\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Defra.Trade.Common.Function.Health" Version="4.0.4" />
+   
     <PackageReference Include="Defra.Trade.Common.Functions" Version="4.0.0" />
     <PackageReference Include="Defra.Trade.Common" Version="4.0.2" />
  
