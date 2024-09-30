@@ -4,10 +4,13 @@
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.4.1" />
     <PackageReference Include="Defra.Trade.Common.Logging" Version="2.0.13" />
+  </ItemGroup>
+  <ItemGroup>
+    <FunctionsPreservedDependencies Include="Microsoft.Extensions.DependencyModel.dll" Visible="false" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Defra.Trade.Events.DAERA.GCNotifier.Application\Defra.Trade.Events.DAERA.GCNotifier.Application.csproj" />
