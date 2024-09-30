@@ -8,12 +8,13 @@
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.4.1" />
     <PackageReference Include="Defra.Trade.Common.Logging" Version="2.0.13" />
+    <PackageReference Include="Defra.Trade.Common.Function.Health" Version="4.0.4" />
   </ItemGroup>
   <ItemGroup>
     <FunctionsPreservedDependencies Include="Microsoft.Extensions.DependencyModel.dll" Visible="false" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Defra.Trade.Events.DAERA.GCNotifier.Application\Defra.Trade.Events.DAERA.GCNotifier.Application.csproj" />
+     <ProjectReference Include="..\Defra.Trade.Events.DAERA.GCNotifier.Application\Defra.Trade.Events.DAERA.GCNotifier.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
