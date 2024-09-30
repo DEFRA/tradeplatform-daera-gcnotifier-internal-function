@@ -1,7 +1,6 @@
 ﻿// Copyright DEFRA (c). All rights reserved.
 // Licensed under the Open Government License v3.0.
 
-using Defra.Trade.Common.ApiClient.External;
 using Defra.Trade.Common.Config;
 using Defra.Trade.Common.Functions;
 using Defra.Trade.Common.Functions.EventStore;
@@ -42,9 +41,6 @@ public static class ServiceRegistrationExtensions
         services.AddOptions<GcNotificationSubscriberSettings>().Bind(gcConfig);
 
         services.Configure<ServiceBusSettings>(configuration.GetSection(ServiceBusSettings.OptionsName));
-
-        services.AddTransient<IApiAuthenticator, ApiAuthenticator>();
-
         return services;
     }
 
