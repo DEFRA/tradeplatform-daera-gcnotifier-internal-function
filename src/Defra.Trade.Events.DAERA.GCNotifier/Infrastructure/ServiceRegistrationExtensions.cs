@@ -1,7 +1,9 @@
 ﻿// Copyright DEFRA (c). All rights reserved.
 // Licensed under the Open Government License v3.0.
 
+using Defra.Trade.Common.ApiClient.External;
 using Defra.Trade.Common.Config;
+using Defra.Trade.Common.Function.Health.Models;
 using Defra.Trade.Common.Functions;
 using Defra.Trade.Common.Functions.EventStore;
 using Defra.Trade.Common.Functions.Interfaces;
@@ -34,6 +36,10 @@ public static class ServiceRegistrationExtensions
             BaseMessageProcessorService<GCNotificationInbound, GcNotificationRequest, GcNotificationRequest, TradeEventMessageHeader>>();
 
         services.AddSingleton<IMessageCollector, EventStoreCollector>();
+
+        var daeraApiConfig = configuration.GetSection(DaeraApiConfig.SectionName);
+        services.AddOptions<DaeraApiConfig>().Bind(daeraApiConfig);
+        services.AddSingleton<IApiAuthenticator, ApiAuthenticator>();
 
         services.AddMessageRetryService();
 
