@@ -30,7 +30,7 @@ public sealed class Startup : FunctionsStartup
         builder.Services.AddApplication(configuration);
         builder.Services.AddFunctionLogging("RemosGCNotifier");
         var healthChecksBuilder = builder.Services.AddFunctionHealthChecks();
-        RegisterHealthChecks(healthChecksBuilder, builder.Services, configuration);
+        RegisterHealthChecks(healthChecksBuilder, configuration);
         builder.ConfigureMapper();
     }
 
@@ -50,7 +50,6 @@ public sealed class Startup : FunctionsStartup
 
     private static void RegisterHealthChecks(
        IHealthChecksBuilder builder,
-       IServiceCollection services,
        IConfiguration configuration)
     {
         builder.AddCheck<AppSettingHealthCheck>("ServiceBus:ConnectionString")
@@ -59,8 +58,6 @@ public sealed class Startup : FunctionsStartup
             .AddCheck<AppSettingHealthCheck>("GCNotifier:DAERA:ClientId")
             .AddCheck<AppSettingHealthCheck>("GCNotifier:DAERA:PushGcEndpoint")
             .AddCheck<AppSettingHealthCheck>("GCNotifier:DAERA:Secret");
-
-        builder.AddDaeraApiCheck(services.BuildServiceProvider());
 
         builder.AddAzureServiceBusCheck(configuration, "ServiceBus:ConnectionString", GcNotificationSubscriberSettings.DefaultQueueName);
     }
