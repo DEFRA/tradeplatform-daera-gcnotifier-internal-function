@@ -10,6 +10,7 @@ using Defra.Trade.Events.DAERA.GCNotifier.Application.Services.Contracts;
 using FakeItEasy;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Shouldly;
 
 namespace Defra.Trade.Events.DAERA.GCNotifier.Functions;
 
@@ -29,6 +30,38 @@ public sealed class GcNotificationSubscriberServiceBusTriggerFunctionTests
         _logger = A.Fake<ILogger<GcNotificationSubscriberServiceBusTriggerFunction>>();
 
         _sut = new GcNotificationSubscriberServiceBusTriggerFunction(_processor, _retry, _queueClientFactory, _logger);
+    }
+
+    [Fact]
+    public void Ctor_NullBaseMessageProcessorService_ThrowsArgumentNullException()
+    {
+        var act = () => new GcNotificationSubscriberServiceBusTriggerFunction(null!, _retry, _queueClientFactory, _logger);
+
+        act.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("baseMessageProcessorService");
+    }
+
+    [Fact]
+    public void Ctor_NullRetry_ThrowsArgumentNullException()
+    {
+        var act = () => new GcNotificationSubscriberServiceBusTriggerFunction(_processor, null!, _queueClientFactory, _logger);
+
+        act.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("retry");
+    }
+
+    [Fact]
+    public void Ctor_NullQueueClientFactory_ThrowsArgumentNullException()
+    {
+        var act = () => new GcNotificationSubscriberServiceBusTriggerFunction(_processor, _retry, null!, _logger);
+
+        act.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("queueClientFactory");
+    }
+
+    [Fact]
+    public void Ctor_NullLogger_ThrowsArgumentNullException()
+    {
+        var act = () => new GcNotificationSubscriberServiceBusTriggerFunction(_processor, _retry, _queueClientFactory, null!);
+
+        act.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("logger");
     }
 
     [Fact]

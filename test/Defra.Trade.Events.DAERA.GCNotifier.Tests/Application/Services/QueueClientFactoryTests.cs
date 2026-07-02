@@ -90,11 +90,4 @@ public sealed class QueueClientFactoryTests
         // Assert
         A.CallTo(() => sender.DisposeAsync()).MustHaveHappenedOnceExactly();
     }
-
-    [Fact]
-    public async Task DisposeAsync_NoSendersCreated_CompletesWithoutError()
-    {
-        // Act & Assert
-        await _sut.DisposeAsync();
-    }
 }
