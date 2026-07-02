@@ -2,11 +2,7 @@
 // Licensed under the Open Government License v3.0.
 
 using Azure.Messaging.ServiceBus;
-using Defra.Trade.Common.Functions.Isolated.Interfaces;
 using Defra.Trade.Events.DAERA.ApiClient;
-using Defra.Trade.Events.DAERA.GCNotifier.Application.Dtos.Inbound;
-using Defra.Trade.Events.DAERA.GCNotifier.Application.Models;
-using Defra.Trade.Events.DAERA.GCNotifier.Functions;
 using Defra.Trade.Events.DAERA.GCNotifier.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,6 +1,8 @@
 // Copyright DEFRA (c). All rights reserved.
 // Licensed under the Open Government License v3.0.
 
+using System.Diagnostics.CodeAnalysis;
+
 using Defra.Trade.Common.AppConfig;
 using Defra.Trade.Common.Config;
 using Defra.Trade.Common.Function.Health.HealthChecks;
@@ -12,6 +14,8 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+[assembly: ExcludeFromCodeCoverage]
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -46,4 +50,4 @@ healthChecksBuilder
     .AddCheck<AppSettingHealthCheck>("GCNotifier:DAERA:PushGcEndpoint")
     .AddCheck<AppSettingHealthCheck>("GCNotifier:DAERA:Secret");
 
-builder.Build().Run();
+await builder.Build().RunAsync();
