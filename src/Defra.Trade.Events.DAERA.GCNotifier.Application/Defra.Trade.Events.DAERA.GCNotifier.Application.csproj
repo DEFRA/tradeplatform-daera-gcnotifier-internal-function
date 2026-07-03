@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -10,9 +10,8 @@
     <None Remove="Infrastructure\**" />
   </ItemGroup>
   <ItemGroup>
-   
-    <PackageReference Include="Defra.Trade.Common.Functions" Version="4.0.0" />
-    <PackageReference Include="Defra.Trade.Common" Version="4.0.2" />
+    <PackageReference Include="Defra.Trade.Common" Version="5.0.2" />
+    <PackageReference Include="Defra.Trade.Common.Functions.Isolated" Version="2.0.1" />
  
   </ItemGroup>
   <ItemGroup>

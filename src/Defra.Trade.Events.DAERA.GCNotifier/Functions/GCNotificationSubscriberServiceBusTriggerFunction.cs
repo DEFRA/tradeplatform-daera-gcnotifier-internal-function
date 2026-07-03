@@ -4,13 +4,13 @@
 using System;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
-using Defra.Trade.Common.Functions;
-using Defra.Trade.Common.Functions.Extensions;
-using Defra.Trade.Common.Functions.Interfaces;
+using Defra.Trade.Common.Functions.Isolated;
+using Defra.Trade.Common.Functions.Isolated.Extensions;
+using Defra.Trade.Common.Functions.Isolated.Interfaces;
 using Defra.Trade.Events.DAERA.GCNotifier.Application.Dtos.Inbound;
 using Defra.Trade.Events.DAERA.GCNotifier.Application.Models;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.ServiceBus;
+using Defra.Trade.Events.DAERA.GCNotifier.Application.Services.Contracts;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
 namespace Defra.Trade.Events.DAERA.GCNotifier.Functions;
@@ -19,69 +19,73 @@ public sealed class GcNotificationSubscriberServiceBusTriggerFunction
 {
     private readonly IBaseMessageProcessorService<GCNotificationInbound> _baseMessageProcessorService;
     private readonly IMessageRetryService _retry;
+    private readonly IQueueClientFactory _queueClientFactory;
+    private readonly ILogger<GcNotificationSubscriberServiceBusTriggerFunction> _logger;
 
-    public GcNotificationSubscriberServiceBusTriggerFunction(IBaseMessageProcessorService<GCNotificationInbound> baseMessageProcessorService, IMessageRetryService retry)
+    public GcNotificationSubscriberServiceBusTriggerFunction(
+        IBaseMessageProcessorService<GCNotificationInbound> baseMessageProcessorService,
+        IMessageRetryService retry,
+        IQueueClientFactory queueClientFactory,
+        ILogger<GcNotificationSubscriberServiceBusTriggerFunction> logger)
     {
         ArgumentNullException.ThrowIfNull(baseMessageProcessorService);
         ArgumentNullException.ThrowIfNull(retry);
+        ArgumentNullException.ThrowIfNull(queueClientFactory);
+        ArgumentNullException.ThrowIfNull(logger);
         _baseMessageProcessorService = baseMessageProcessorService;
         _retry = retry;
+        _queueClientFactory = queueClientFactory;
+        _logger = logger;
     }
 
-    [ServiceBusAccount(GcNotificationSubscriberSettings.ConnectionStringConfigurationKey)]
-    [FunctionName(nameof(GcNotificationSubscriberServiceBusTriggerFunction))]
+    [Function(nameof(GcNotificationSubscriberServiceBusTriggerFunction))]
     public async Task RunAsync(
-        [ServiceBusTrigger(queueName: GcNotificationSubscriberSettings.DefaultQueueName, IsSessionsEnabled = false)] ServiceBusReceivedMessage message,
+        [ServiceBusTrigger(GcNotificationSubscriberSettings.DefaultQueueName, Connection = GcNotificationSubscriberSettings.ConnectionStringConfigurationKey, IsSessionsEnabled = false)] ServiceBusReceivedMessage message,
         ServiceBusMessageActions messageActions,
-        ExecutionContext executionContext,
-        [ServiceBus(GcNotificationSubscriberSettings.TradeEventInfo)] IAsyncCollector<ServiceBusMessage> eventStoreCollector,
-        [ServiceBus(GcNotificationSubscriberSettings.DefaultQueueName)] IAsyncCollector<ServiceBusMessage> retryQueue,
-        ILogger logger)
+        FunctionContext executionContext)
     {
-        _retry.SetContext(message, retryQueue);
-        await RunInternalAsync(message, messageActions, eventStoreCollector, executionContext, logger);
+        var retrySender = _queueClientFactory.CreateNotifierQueueClient();
+        _retry.SetContext(message, retrySender);
+        await RunInternalAsync(message, messageActions, executionContext);
     }
 
     private async Task RunInternalAsync(ServiceBusReceivedMessage message,
                        ServiceBusMessageActions messageReceiver,
-                       IAsyncCollector<ServiceBusMessage> eventStoreCollector,
-                       ExecutionContext executionContext,
-                       ILogger logger)
+                       FunctionContext executionContext)
     {
         try
         {
-            logger.LogInformation("Messages Id : {MessageId} received on {FunctionName}", message.MessageId, executionContext.FunctionName);
+            _logger.LogInformation("Messages Id : {MessageId} received on {FunctionName}", message.MessageId, executionContext.FunctionDefinition.Name);
 
-            LogGcId(logger, message);
+            LogGcId(message);
 
-            await _baseMessageProcessorService.ProcessAsync(executionContext.InvocationId.ToString(),
+            await _baseMessageProcessorService.ProcessAsync(executionContext.InvocationId,
                 GcNotificationSubscriberSettings.DefaultQueueName,
                 GcNotificationSubscriberSettings.PublisherId,
                 message,
                 messageReceiver,
-                eventStoreCollector,
                 originalCrmPublisherId: GcNotificationSubscriberSettings.PublisherId,
                 originalSource: GcNotificationSubscriberSettings.DefaultQueueName,
                 originalRequestName: "Create");
 
-            logger.LogInformation("Finished processing Messages Id : {MessageId} received on {FunctionName}", message.MessageId, executionContext.FunctionName);
+            _logger.LogInformation("Finished processing Messages Id : {MessageId} received on {FunctionName}", message.MessageId, executionContext.FunctionDefinition.Name);
         }
         catch (Exception ex)
         {
-            logger.LogCritical(ex, ex.Message);
+            _logger.LogCritical(ex, ex.Message);
         }
     }
 
-    private static void LogGcId(ILogger logger, ServiceBusReceivedMessage message)
+    private void LogGcId(ServiceBusReceivedMessage message)
     {
         GCNotificationInbound? incoming = message.GetPayloadAsInstanceOf<GCNotificationInbound>();
         if (string.IsNullOrEmpty(incoming?.GCId))
         {
-            logger.LogWarning("The incoming message does not have a GcId");
+            _logger.LogWarning("The incoming message does not have a GcId");
         }
         else
         {
-            logger.LogInformation("Message received with GcId: {GcId}", incoming.GCId);
+            _logger.LogInformation("Message received with GcId: {GcId}", incoming.GCId);
         }
     }
 }

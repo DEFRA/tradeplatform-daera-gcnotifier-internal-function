@@ -3,10 +3,9 @@
 
 using Defra.Trade.Common.Function.Health;
 using Defra.Trade.Events.DAERA.GCNotifier.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Defra.Trade.Events.DAERA.GCNotifier.Functions;
@@ -26,7 +25,7 @@ public class HealthCheckFunctionTests
     public void RunAsync_HasFunctionAttribute()
     {
         // Arrange & Act
-        var attribute = FunctionTestHelpers.MethodHasSingleAttribute<HealthCheckFunction, FunctionNameAttribute>(
+        var attribute = FunctionTestHelpers.MethodHasSingleAttribute<HealthCheckFunction, FunctionAttribute>(
             nameof(HealthCheckFunction.RunAsync));
 
         // Assert
@@ -41,15 +40,14 @@ public class HealthCheckFunctionTests
             nameof(HealthCheckFunction.RunAsync),
             "health",
             ["GET"],
-            AuthorizationLevel.Anonymous);
+            Microsoft.Azure.Functions.Worker.AuthorizationLevel.Anonymous);
     }
 
     [Fact]
     public async Task RunAsync_ValidHealthCheck_ReturnsOkResponse()
     {
         // Arrange
-        var body = new MemoryStream(Encoding.UTF8.GetBytes(string.Empty));
-        var req = new FakeHttpRequestData(new Mock<FunctionContext>().Object, new Uri("https://test/api/message"), body);
+        var req = new Mock<HttpRequest>().Object;
         var healthReport = new HealthReport(new Dictionary<string, HealthReportEntry>(), HealthStatus.Healthy, TimeSpan.FromSeconds(1));
         _healthCheckService.Setup(s => s.CheckHealthAsync(null, CancellationToken.None)).ReturnsAsync(healthReport);
 
@@ -67,8 +65,7 @@ public class HealthCheckFunctionTests
     public async Task RunAsync_InvalidHealthCheck_ReturnsInternalServerErrorResponse()
     {
         // Arrange
-        var body = new MemoryStream(Encoding.UTF8.GetBytes(string.Empty));
-        var req = new FakeHttpRequestData(new Mock<FunctionContext>().Object, new Uri("https://test/api/message"), body);
+        var req = new Mock<HttpRequest>().Object;
         var healthReport = new HealthReport(new Dictionary<string, HealthReportEntry>(), HealthStatus.Unhealthy, TimeSpan.FromSeconds(1));
         _healthCheckService.Setup(s => s.CheckHealthAsync(null, CancellationToken.None)).ReturnsAsync(healthReport);
 

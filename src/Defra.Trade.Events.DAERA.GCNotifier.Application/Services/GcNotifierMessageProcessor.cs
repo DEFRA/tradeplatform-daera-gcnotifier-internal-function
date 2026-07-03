@@ -3,9 +3,9 @@
 
 using System.Net;
 using AutoMapper;
-using Defra.Trade.Common.Functions.Extensions;
-using Defra.Trade.Common.Functions.Interfaces;
-using Defra.Trade.Common.Functions.Models;
+using Defra.Trade.Common.Functions.Isolated.Extensions;
+using Defra.Trade.Common.Functions.Isolated.Interfaces;
+using Defra.Trade.Common.Functions.Isolated.Models;
 using Defra.Trade.Events.DAERA.ApiClient;
 using Defra.Trade.Events.DAERA.GCNotifier.Application.Dtos.Dynamics;
 using Defra.Trade.Events.DAERA.GCNotifier.Application.Dtos.Inbound;

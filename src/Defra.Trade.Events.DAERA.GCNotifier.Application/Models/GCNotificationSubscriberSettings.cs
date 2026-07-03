@@ -24,7 +24,7 @@ public sealed class GcNotificationSubscriberSettings
 #endif
 
     public const string PublisherId = "REMOS";
-    public const string TradeEventInfo = Common.Functions.Constants.QueueName.DefaultEventsInfoQueueName;
+    public const string TradeEventInfo = Common.Functions.Isolated.Constants.QueueName.DefaultEventsInfoQueueName;
 
     public const string AppConfigSentinelName = "Sentinel";
     public string RemosGCNotifierQueue { get; set; } = DefaultQueueName;
