@@ -1,13 +1,10 @@
 {
     "version": "2.0",
     "logging": {
-        "logLevel": {
-            "Defra.Trade.Events.DAERA.GCNotifier.Application": "Information"
-        },
         "applicationInsights": {
             "samplingSettings": {
                 "isEnabled": true,
-                "excludedTypes": "Request,Trace"
+                "excludedTypes": "Request"
             }
         }
     }
