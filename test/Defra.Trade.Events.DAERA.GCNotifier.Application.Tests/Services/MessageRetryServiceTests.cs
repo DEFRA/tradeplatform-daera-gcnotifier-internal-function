@@ -2,10 +2,9 @@
 // Licensed under the Open Government License v3.0.
 
 using Azure.Messaging.ServiceBus;
-using Defra.Trade.Common.Functions.Interfaces;
-using Defra.Trade.Common.Functions.Services;
+using Defra.Trade.Common.Functions.Isolated.Interfaces;
+using Defra.Trade.Common.Functions.Isolated.Services;
 using FakeItEasy;
-using Microsoft.Azure.WebJobs;
 using Shouldly;
 using Xunit;
 
@@ -37,7 +36,7 @@ public class MessageRetryServiceTests
     {
         // arrange
         var message = ServiceBusModelFactory.ServiceBusReceivedMessage();
-        var queue = A.Fake<IAsyncCollector<ServiceBusMessage>>();
+        var queue = A.Fake<ServiceBusSender>();
 
         // act
         _sut.SetContext(message, queue);
@@ -54,7 +53,7 @@ public class MessageRetryServiceTests
     {
         // arrange
         var message = ServiceBusModelFactory.ServiceBusReceivedMessage();
-        var queue = A.Fake<IAsyncCollector<ServiceBusMessage>>();
+        var queue = A.Fake<ServiceBusSender>();
         async Task SetContext()
         {
             await Task.Delay(100);
@@ -74,7 +73,7 @@ public class MessageRetryServiceTests
     {
         // arrange
         var message = ServiceBusModelFactory.ServiceBusReceivedMessage();
-        var queue = A.Fake<IAsyncCollector<ServiceBusMessage>>();
+        var queue = A.Fake<ServiceBusSender>();
         async Task<IMessageRetryContext?> GetContext()
         {
             await Task.Delay(100);
